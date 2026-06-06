@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Instagram Non-Mutual Cleanup
 // @namespace    https://local/instagram-nonmutual-cleanup
-// @version      1.3.2
+// @version      1.3.3
 // @description  Unfollow Instagram accounts that don't follow you back, and export your following / followers / non-mutuals to CSV, JSON, or TXT. Same-origin only, no third parties, gentle throttling, light/dark UI.
 // @author       you
 // @homepageURL  https://github.com/WackyPingu/instagram-nonmutual-cleanup
@@ -834,10 +834,16 @@ header:active { cursor: grabbing; }
 header .logo { display: grid; place-items: center; flex: none; color: #d62976; }
 header .logo svg { display: block; }
 header .title { font-weight: 700; flex: 1; letter-spacing: .2px; }
+header .title .ver { font-weight: 600; font-size: 10px; color: var(--muted); letter-spacing: .02em; }
 header .icon-btn { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 16px; line-height: 1; padding: 4px 8px; border-radius: 8px; }
 header .icon-btn:hover { background: var(--hover); color: var(--text); }
 
 .body { padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 13px; flex: 1 1 auto; min-height: 0; }
+
+/* Visible thin scrollbars so it's obvious the panel scrolls (Windows hides them by default). */
+.body::-webkit-scrollbar, .cands::-webkit-scrollbar, .log::-webkit-scrollbar { width: 9px; height: 9px; }
+.body::-webkit-scrollbar-track, .cands::-webkit-scrollbar-track, .log::-webkit-scrollbar-track { background: transparent; }
+.body::-webkit-scrollbar-thumb, .cands::-webkit-scrollbar-thumb, .log::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 999px; border: 2px solid transparent; background-clip: content-box; }
 
 .step { display: flex; align-items: center; gap: 8px; }
 .step .n { width: 19px; height: 19px; border-radius: 50%; background: var(--ghost-bg); color: var(--muted); font-size: 11px; font-weight: 700; display: grid; place-items: center; flex: none; }
@@ -866,7 +872,7 @@ header .icon-btn:hover { background: var(--hover); color: var(--text); }
 .cd-bar { height: 6px; border-radius: 999px; background: var(--ghost-bg); overflow: hidden; }
 .cd-fill { height: 100%; width: 100%; border-radius: 999px; background: linear-gradient(45deg,#fa7e1e,#d62976,#962fbf); transition: width .25s linear; }
 
-.cands { border: 1px solid var(--border); border-radius: 12px; max-height: 240px; overflow-y: auto; background: var(--input-bg); }
+.cands { border: 1px solid var(--border); border-radius: 12px; min-height: 120px; max-height: 240px; overflow-y: auto; background: var(--input-bg); flex-shrink: 4; }
 .cand { display: flex; align-items: center; gap: 10px; padding: 8px 11px; border-bottom: 1px solid var(--row-border); }
 .cand:last-child { border-bottom: 0; }
 .cand input { width: 16px; height: 16px; accent-color: #d62976; flex: none; }
@@ -891,7 +897,7 @@ details > .content { padding: 0 12px 12px; display: flex; flex-direction: column
 .field input { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px; font-size: 12px; }
 select { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-.log { background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 8px 10px; height: 128px; overflow-y: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; color: var(--text); }
+.log { background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 8px 10px; height: 104px; flex: none; overflow-y: auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; color: var(--text); }
 .log .ts { color: var(--muted); opacity: .75; }
 .log .info { color: var(--text); }
 .log .warn { color: var(--warn); }
@@ -1008,7 +1014,7 @@ select { background: var(--bg); color: var(--text); border: 1px solid var(--bord
         <span class="logo" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
         </span>
-        <span class="title">Non-Mutual Cleanup</span>
+        <span class="title">Non-Mutual Cleanup <span class="ver">v1.3.3</span></span>
         <button class="icon-btn" id="themeBtn" title="Toggle light / dark">🌙</button>
         <button class="icon-btn" id="minBtn" title="Minimize">–</button>
       </header>
