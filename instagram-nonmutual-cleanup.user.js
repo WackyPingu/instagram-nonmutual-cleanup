@@ -4,6 +4,10 @@
 // @version      1.3.2
 // @description  Unfollow Instagram accounts that don't follow you back, and export your following / followers / non-mutuals to CSV, JSON, or TXT. Same-origin only, no third parties, gentle throttling, light/dark UI.
 // @author       you
+// @homepageURL  https://github.com/WackyPingu/instagram-nonmutual-cleanup
+// @supportURL   https://github.com/WackyPingu/instagram-nonmutual-cleanup/issues
+// @downloadURL  https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/instagram-nonmutual-cleanup.user.js
+// @updateURL    https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/instagram-nonmutual-cleanup.user.js
 // @match        https://www.instagram.com/*
 // @match        https://instagram.com/*
 // @run-at       document-idle
