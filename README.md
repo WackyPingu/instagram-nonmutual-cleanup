@@ -31,14 +31,27 @@ DOM fallback) is inlined in that one file.
 ## Install
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/) in your browser.
-2. Add the script, either way:
-   - **Drag & drop:** drag `instagram-nonmutual-cleanup.user.js` onto the
-     Tampermonkey dashboard, then click **Install**; or
-   - **Copy/paste:** open the Tampermonkey dashboard → **+** (Create a new script) →
-     replace the template with the full contents of the file → **File ▸ Save**.
-   Tampermonkey reads the `// ==UserScript==` header automatically.
+2. **One-click install** — open the raw script and Tampermonkey detects it and shows
+   its install page; click **Install** there:
+
+   👉 **[Install Instagram Non-Mutual Cleanup](https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/instagram-nonmutual-cleanup.user.js)**
+
+   The script declares `@downloadURL` / `@updateURL`, so Tampermonkey will also offer
+   **automatic updates** from this repo whenever `@version` is bumped.
 3. Open / refresh `https://www.instagram.com/` while logged in. A panel appears in
-   the bottom-right corner.
+   the bottom-right corner (drag its header to move it).
+
+<details>
+<summary>Manual install (if the one-click link doesn't trigger Tampermonkey)</summary>
+
+- **Drag & drop:** drag `instagram-nonmutual-cleanup.user.js` onto the Tampermonkey
+  dashboard, then click **Install**; or
+- **Copy/paste:** open the Tampermonkey dashboard → **+** (Create a new script) →
+  replace the template with the full contents of the file → **File ▸ Save**.
+
+Tampermonkey reads the `// ==UserScript==` header automatically.
+
+</details>
 
 That's it — it's installable as-is.
 
@@ -104,6 +117,7 @@ and provides the numeric ids needed for the direct unfollow call.
 
 ## Editing
 
-It's a single plain-JS file. Edit `instagram-nonmutual-cleanup.user.js` directly,
-bump `@version` in the header if you want Tampermonkey to offer an update, and
-re-save in the dashboard.
+It's a single plain-JS file. Edit `instagram-nonmutual-cleanup.user.js` directly and
+bump `@version` in the header. Then either re-save it in the Tampermonkey dashboard,
+or **push to `main`** on GitHub — installed users pick up the new version through the
+`@updateURL` (Tampermonkey checks periodically, or use *Check for userscript updates*).
