@@ -1,22 +1,23 @@
-# Instagram Non-Mutual Cleanup (Tampermonkey userscript)
+# Instagram Non-Mutual Detector (Tampermonkey userscript)
 
-Unfollows accounts **you follow that don't follow you back**.
+Detects accounts **you follow that don't follow you back**.
 Runs entirely inside your already-logged-in `instagram.com` tab and reuses that
-session.
+session. **Read-only — it never unfollows or changes anything.**
 
 - ✅ Same-origin only — never asks for your username/password, never talks to any
   third-party service.
-- ✅ Pick accounts, **Unfollow** with a one-click confirmation.
+- ✅ **Read-only** — it loads your lists and shows the non-mutuals; it never modifies
+  your account.
 - ✅ **Export** your following, followers, or non-mutuals to **CSV / JSON / TXT** — built
   in-page and saved straight to your device, nothing uploaded.
-- ✅ Gentle throttling with randomized delays, batch pauses, a daily cap, and speed presets.
+- ✅ Gentle randomized paging while reading, so it stays light on the API.
 - ✅ Clean **light / dark** UI (defaults to light); **drag the header** to move the panel
   (position is remembered).
 - ✅ Stops immediately on any rate-limit / challenge / `feedback_required` signal.
 
-> Automating Instagram is against IG's Terms of Service. This is for cleaning up
-> **your own** account. Keep it gentle; correctness and not getting flagged matter
-> more than speed. Use at your own risk.
+> Reading your own following/followers via Instagram's internal web API is still
+> automation and against IG's Terms of Service. This is for inspecting **your own**
+> account. Keep it gentle. Use at your own risk.
 
 ## Deliverable
 
@@ -25,8 +26,8 @@ A single, self-contained plain-JavaScript userscript:
 **`instagram-nonmutual-cleanup.user.js`**
 
 No build step, no dependencies, no `@require`, nothing external — everything
-(config, persistence, API client, set math, throttling, shadow-DOM UI, runner, and
-DOM fallback) is inlined in that one file.
+(persistence, API client, set math, export, shadow-DOM UI, and the read-only DOM
+fallback) is inlined in that one file.
 
 ## Install
 
@@ -34,7 +35,7 @@ DOM fallback) is inlined in that one file.
 2. **One-click install** — open the raw script and Tampermonkey detects it and shows
    its install page; click **Install** there:
 
-   👉 **[Install Instagram Non-Mutual Cleanup](https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/instagram-nonmutual-cleanup.user.js)**
+   👉 **[Install Instagram Non-Mutual Detector](https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/instagram-nonmutual-cleanup.user.js)**
 
    The script declares `@downloadURL` / `@updateURL`, so Tampermonkey will also offer
    **automatic updates** from this repo whenever `@version` is bumped.
@@ -60,10 +61,10 @@ That's it — it's installable as-is.
 1. Click **Load non-mutuals**. It reads your full following + followers lists via the
    internal web API and logs the counts — verify they roughly match your profile
    header.
-2. It computes **non-mutuals = following − followers** and shows them with a
-   checkbox each (checked by default). Use **All / None** to bulk-select.
-3. Click **Unfollow N** — it unfollows the ticked accounts after one confirmation
-   dialog, one at a time with the gentle delays. **Stop** aborts cleanly at any time.
+2. It computes **non-mutuals = following − followers** and lists them (each links to
+   the profile; 🔒 marks private accounts). Nothing is changed — the list is just for
+   review and export.
+3. Use the **Export lists** row to save the list (see below).
 4. Use the 🌙 / ☀ button in the header to switch **light / dark** mode (remembered).
 
 ### Export your lists
@@ -80,31 +81,19 @@ CSV/JSON include `username`, `full_name`, `is_private`, the numeric `pk`, and th
 browser; nothing is sent anywhere. (Lists scraped via the DOM fallback only have
 usernames, so the other columns will be blank.)
 
-### Speed presets & throttling
+### Gentle by default
 
-Open **Advanced settings** for **Speed presets** and individual throttle fields
-(persisted with `GM_setValue`):
-
-- **Safe (default):** 40–90 s per unfollow, batches of 7, 4-min rests, cap 80.
-- **Medium:** 15–30 s, batches of 10, 2-min rests, cap 120.
-- **Fast ⚠:** 7–15 s, batches of 15, 1-min rests, cap 200.
-
-The delays are deliberate: Instagram flags rapid unfollowing with a temporary
-**"Action Blocked"**. Faster presets raise that risk — Safe is recommended. On
-`feedback_required` / `please wait a few minutes` / HTTP 429 / challenge, the run
-stops immediately (no retry loop), and it also bails after 3 errors in a row.
-
-A **Test 1 real unfollow** button (Advanced) performs a single real unfollow and
-prints the exact HTTP status + response to the log — handy for diagnosing issues.
+Reading is deliberately gentle — short randomized pauses between API pages. On
+`feedback_required` / `please wait a few minutes` / HTTP 429 / challenge, the read
+stops immediately (no retry loop).
 
 ### DOM fallback (only if the API is blocked)
 
 Expand **DOM fallback** in the panel. Open your Following (or Followers) list in
 its modal, then click **Scrape Following** / **Scrape Followers**. It scrolls the
-virtualized list and collects usernames as it goes. With **Use DOM mode** checked,
-unfollowing clicks through the row's *Following → Unfollow* confirm dialog (keep the
-Following modal open while it runs). The API path is preferred — it's more reliable
-and provides the numeric ids needed for the direct unfollow call.
+virtualized list and collects usernames as it goes. The API path is preferred — it's
+more reliable and provides the numeric `pk`, `full_name`, and `is_private` fields
+that scraped lists lack.
 
 ## How it works
 
@@ -112,7 +101,8 @@ and provides the numeric ids needed for the direct unfollow call.
   `x-ig-app-id: 936619743392459` and `x-csrftoken`.
 - `GET /api/v1/friendships/{my_id}/following|followers/?count=50&max_id=…`,
   paginating on `next_max_id`.
-- `POST /api/v1/friendships/destroy/{pk}/` to unfollow.
+- Non-mutuals are computed locally as **following − followers** — no write requests
+  are ever made.
 - Endpoints/shapes rotate — if a request fails, check them against the live site.
 
 ## Editing
