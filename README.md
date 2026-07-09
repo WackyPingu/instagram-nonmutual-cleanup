@@ -23,7 +23,7 @@ session. **Read-only — it never unfollows or changes anything.**
 
 A single, self-contained plain-JavaScript userscript:
 
-**`instagram-nonmutual-cleanup.user.js`**
+**`Instagram Non-Mutual Detector.user.js`**
 
 No build step, no dependencies, no `@require`, nothing external — everything
 (persistence, API client, set math, export, shadow-DOM UI, and the read-only DOM
@@ -35,7 +35,7 @@ fallback) is inlined in that one file.
 2. **One-click install** — open the raw script and Tampermonkey detects it and shows
    its install page; click **Install** there:
 
-   👉 **[Install Instagram Non-Mutual Detector](https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/instagram-nonmutual-cleanup.user.js)**
+   👉 **[Install Instagram Non-Mutual Detector](https://github.com/WackyPingu/instagram-nonmutual-cleanup/raw/refs/heads/main/Instagram%20Non-Mutual%20Detector.user.js)**
 
    The script declares `@downloadURL` / `@updateURL`, so Tampermonkey will also offer
    **automatic updates** from this repo whenever `@version` is bumped.
