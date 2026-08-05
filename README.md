@@ -37,7 +37,7 @@ fallback) is inlined in that one file.
 2. **One-click install** — open the raw script and Tampermonkey detects it and shows
    its install page; click **Install** there:
 
-   👉 **[Install Instagram Non-Mutual Detector](https://github.com/WackyPingu/instagram-nonmutual-detector/raw/refs/heads/main/instagram-nonmutual-detector.user.js)**
+   👉 **[Install Instagram Non-Mutual Detector](https://github.com/WackyPingu/instagram-nonmutual-detector/raw/refs/heads/main/Instagram%20Non-Mutual%20Detector.user.js)**
 
    The script declares `@downloadURL` / `@updateURL`, so Tampermonkey will also offer
    **automatic updates** from this repo whenever `@version` is bumped.
